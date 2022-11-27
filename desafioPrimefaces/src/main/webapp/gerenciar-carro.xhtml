@@ -14,6 +14,7 @@
         <p:toolbar>
             <p:toolbarGroup>
                 <p:commandButton value="Adicionar" action="#{com.desafioPrimefaces.bean.CarroBean.adicionar()}" update="@form"></p:commandButton>
+                <p:commandButton value="Listar" action="#{com.desafioPrimefaces.bean.CarroBean.listar()}" update="@form"></p:commandButton>
             </p:toolbarGroup>
         </p:toolbar>
         <p:fieldset legend="Objetos">
@@ -32,7 +33,10 @@
 
             </p:panelGrid>
 
-            <p:dataTable value="#{com.desafioPrimefaces.bean.CarroBean.carros" var="carro" >
+            <p:dataTable value="#{com.desafioPrimefaces.bean.CarroBean.carros}" var="carro" >
+                <p:collumn>
+                    <p:commandButton value="Editar" action="#{com.desafioPrimefaces.bean.CarroBean.editar(carro)}" update="@form"></p:commandButton>
+                </p:collumn>
                 <p:column headerText="Modelo" sortBy="#{carro.modelo}">
                     <h:outputText value="#{carro.modelo}" ></h:outputText>
                 </p:column>
