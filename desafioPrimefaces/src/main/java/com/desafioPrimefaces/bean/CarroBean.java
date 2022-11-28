@@ -1,36 +1,26 @@
 package com.desafioPrimefaces.bean;
-
-import com.desafioPrimefaces.entity.Carro;
+import com.desafioPrimefaces.dao.CarroDAO;
+import com.desafioPrimefaces.entidade.Carro;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import java.util.ArrayList;
-import java.util.List;
 
 @ManagedBean
 @SessionScoped
-public class CarroBean {
-    private Carro carro;
-    private List<Carro> carros = new ArrayList<>();
+public class CarroBean extends CrudBean<Carro, CarroDAO> {
 
-    public void adicionar(){
-        carros.add(carro);
-        carro = new Carro();
+    private CarroDAO carroDAO;
+
+    @Override
+    public CarroDAO getDao() {
+        if (carroDAO == null){
+            carroDAO = new CarroDAO();
+        }
+        return carroDAO;
     }
 
-    public Carro getCarro() {
-        return carro;
-    }
-
-    public void setCarro(Carro carro) {
-        this.carro = carro;
-    }
-
-    public List<Carro> getCarros() {
-        return carros;
-    }
-
-    public void setCarros(List<Carro> carros) {
-        this.carros = carros;
+    @Override
+    public Carro criarNovaEntidade() {
+        return new Carro();
     }
 }
