@@ -1,4 +1,4 @@
-package com.desafioPrimefaces.entity;
+package com.desafioPrimefaces.entidade;
 
 import java.util.Date;
 import java.util.Objects;

@@ -13,29 +13,33 @@
     <h:form>
         <p:toolbar>
             <p:toolbarGroup>
-                <p:commandButton value="Adicionar" action="#{com.desafioPrimefaces.bean.CarroBean.adicionar()}" update="@form"></p:commandButton>
-                <p:commandButton value="Listar" action="#{com.desafioPrimefaces.bean.CarroBean.listar()}" update="@form"></p:commandButton>
+                <p:commandButton value="Novo" action="#{com.desafioPrimefaces.bean.CarroBean.novo()}" update="@form"></p:commandButton>
+                <p:commandButton value="Salvar" action="#{com.desafioPrimefaces.bean.CarroBean.salvar()}" disable="#{com.desafioPrimefaces.bean.CarroBean.busca == true}" update="@form"></p:commandButton>
+                <p:commandButton value="Buscar" action="#{com.desafioPrimefaces.bean.CarroBean.buscar()}" update="@form"></p:commandButton>
             </p:toolbarGroup>
         </p:toolbar>
+
+        <p:messages autoUpdate ="true" showDetail ="true"></p:messages>
         <p:fieldset legend="Objetos">
-            <p:panelGrid colums="2">
+            <p:panelGrid colums="2" rendered="#{com.desafioPrimefaces.bean.CarroBean.busca == false}">
                 <h:outputLabet value="Modelo"></h:outputLabet>
-                <p:inputText value="#{com.desafioPrimefaces.bean.CarroBean.carro.modelo}"></p:inputText>
+                <p:inputText value="#{com.desafioPrimefaces.bean.CarroBean.entidade.modelo}"></p:inputText>
 
                 <h:outputLabet value="Fabricante"></h:outputLabet>
-                <p:inputText value="#{com.desafioPrimefaces.bean.CarroBean.carro.fabricante}"></p:inputText>
+                <p:inputText value="#{com.desafioPrimefaces.bean.CarroBean.entidade.fabricante}"></p:inputText>
 
                 <h:outputLabet value="Cor"></h:outputLabet>
-                <p:inputText value="#{com.desafioPrimefaces.bean.CarroBean.carro.cor}"></p:inputText>
+                <p:inputText value="#{com.desafioPrimefaces.bean.CarroBean.entidade.cor}"></p:inputText>
 
                 <h:outputLabet value="Ano"></h:outputLabet>
-                <p:inputMask mask="9999" value="#{com.desafioPrimefaces.bean.CarroBean.carro.ano}"></p:inputMask>
+                <p:inputMask value="#{com.desafioPrimefaces.bean.CarroBean.entidade.ano}"></p:inputMask>
 
             </p:panelGrid>
 
-            <p:dataTable value="#{com.desafioPrimefaces.bean.CarroBean.carros}" var="carro" >
+            <p:dataTable value="#{com.desafioPrimefaces.bean.CarroBean.entidades}" var="carro" rendered="#{com.desafioPrimefaces.bean.CarroBean.busca == true}">
                 <p:collumn>
                     <p:commandButton value="Editar" action="#{com.desafioPrimefaces.bean.CarroBean.editar(carro)}" update="@form"></p:commandButton>
+                    <p:commandButton value="Deletar" action="#{com.desafioPrimefaces.bean.CarroBean.deletar(carro)}" update="@form"></p:commandButton>
                 </p:collumn>
                 <p:column headerText="Modelo" sortBy="#{carro.modelo}">
                     <h:outputText value="#{carro.modelo}" ></h:outputText>

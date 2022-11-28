@@ -1,16 +1,17 @@
 package com.desafioPrimefaces.dao;
 
-import com.desafioPrimefaces.entity.Carro;
+import com.desafioPrimefaces.entidade.Carro;
 import com.desafioPrimefaces.util.FabricaConexao;
+import com.desafioPrimefaces.util.exception.ErroSistema;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class CarroDAO {
-    public void salvar(Carro carro) throws ClassNotFoundException{
+public class CarroDAO implements CrudDAO<Carro>{
+    @Override
+    public void salvar(@NotNull Carro carro) throws ErroSistema{
         try (Connection connection = FabricaConexao.getConnection()) {
             PreparedStatement preparedStatement = null;
             if (carro.getId() == null){
@@ -28,13 +29,24 @@ public class CarroDAO {
             FabricaConexao.fecharConexao();
 
         }catch (SQLException e){
-            Logger.getLogger(CarroDAO.class.getName()).log(Level.SEVERE, null, e);
+            throw new ErroSistema("Erro ao tentar salvar", e);
         }
 
 
     }
+    @Override
+    public void deletar(Carro carro) throws ErroSistema{
+        try {Connection connection = FabricaConexao.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("delete from carro where id = ?");
+        preparedStatement.setInt(1, carro.getId());
 
-    public List<Carro> buscar() throws SQLException, ClassNotFoundException {
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new ErroSistema("Erro ao deletar o carro", e);
+        }
+    }
+    @Override
+    public List<Carro> buscar() throws ErroSistema {
         try{ Connection connection = FabricaConexao.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("select * from carro");
 
@@ -49,11 +61,12 @@ public class CarroDAO {
                 carro.setAno(resultSet.getDate("ano"));
                 carros.add(carro);
             }
+            FabricaConexao.fecharConexao();
+            return carros;
 
         }catch (SQLException e){
-            Logger.getLogger(CarroDAO.class.getName()).log(Level.SEVERE, null, e);
-
-        }return null;
+            throw new ErroSistema("Erro ao buscar os carros", e);
+        }
 
     }
 
