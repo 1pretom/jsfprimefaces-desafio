@@ -4,24 +4,32 @@ import com.desafioPrimefaces.entidade.Ocorrencia;
 import com.desafioPrimefaces.util.FabricaConexao;
 import com.desafioPrimefaces.util.exception.ErroSistema;
 
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OcorrenciaDAO implements CrudDAO<Ocorrencia>{
+
+//    private FabricaConexao fabricaConexao;
+//    private Connection getConnection() throws SQLException, ClassNotFoundException{
+//        fabricaConexao = new FabricaConexao("org.h2.Driver","jdbc:h2:~/gerenciarOcorrencias;AUTO_SERVER=TRUE;INIT=RUNSCRIPT FROM 'create.sql'","sa","");
+//    return fabricaConexao.getConnection();
+//    }
     @Override
-    public void salvar(Ocorrencia entidade) throws ErroSistema {
+    public void salvar(Ocorrencia ocorrencia) throws ErroSistema {
+
         try (Connection connection = FabricaConexao.getConnection()) {
             PreparedStatement preparedStatement = null;
-            if (entidade.getId() == null){
+            if (ocorrencia.getId() == null){
                 connection.prepareCall("INSERT INTO ocorrencias (nome_vitima,descricao) " +
                         "VALUES (?,?)");
             }else {
                 preparedStatement = connection.prepareStatement("update ocorrencias set nome_vitima=?, descricao=? where id=?");
-                preparedStatement.setInt(3,entidade.getId());
+                preparedStatement.setInt(3,ocorrencia.getId());
             }
-            preparedStatement.setString(1, entidade.getNomeVitima());
-            preparedStatement.setString(2, entidade.getDescricao());
+            preparedStatement.setString(1, ocorrencia.getNomeVitima());
+            preparedStatement.setString(2, ocorrencia.getDescricao());
 
             preparedStatement.execute();
             FabricaConexao.fecharConexao();
